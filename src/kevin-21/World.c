@@ -75,6 +75,13 @@ void add_contacts(World* world, int country_idx, int region_idx, int depth, int*
   // persona_print(person,0);
 }
 
+void inform(World* world, int country_idx, int region_idx, int output){ //Notese cambiar el output para hacer el write
+  printf("INFORM %i %i\n");
+  Persona* first = &world->countries[country_idx][region_idx];
+  persona_print(first, 0);
+
+}
+
 int main(){
   World* NW = world_init(2);
   create_region(NW, 0, 2);
