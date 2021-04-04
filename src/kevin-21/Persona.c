@@ -43,15 +43,10 @@ void persona_print(Persona* persona,int n)
 
 void persona_append(Persona* persona, int id, int state)
 {
-  // Aqui podemos apreciar la utilidad de esta modelacion, el código queda
-  // super ordenado y legible
-  
-  // Creamos el nuevo nodo
+ 
   Persona *new_persona = persona_init(id, state);
-    // Ponemos al self como parent de new
   new_persona->parent = persona;
   
-  // Asignamos el head si no hay o el nuevo tail si lo hay.
   if (!persona->head) {
       persona->head = new_persona;
   }
