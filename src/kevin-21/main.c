@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
-
+#include "World.c"
 
 
 /* Retorna true si ambos strings son iguales */
@@ -38,10 +38,8 @@ int main(int argc, char **argv)
 
   /* Abrimos el archivo de input */
   FILE *input_file = fopen(argv[1], "r");
-
   /* Abrimos el archivo de output */
   FILE *output_file = fopen(argv[2], "w");
-
 
   char command[32];
   
@@ -50,6 +48,7 @@ int main(int argc, char **argv)
   fscanf(input_file, "%d", &n_countries);
 
   /* [Por implementar] Generamos nuestro mundo */
+  World* new_world =world_init(n_countries);
 
   /* Leemos la cantidad de regiones de cada país */
   int n_regions;
@@ -58,7 +57,7 @@ int main(int argc, char **argv)
     fscanf(input_file, "%d", &n_regions);
     
     /* [Por implementar] Poblamos el país con regiones */
-    
+    create_region(new_world, cty, n_regions);
   }
 
   /* Número de eventos/líneas */
@@ -96,17 +95,21 @@ int main(int argc, char **argv)
     if (string_equals(command, "ADD_CONTACTS"))
     {
       fscanf(input_file, "%d", &depth);
+      int route[depth];
+      route[0]=0;
       printf("ADD_CONTACTS %d %d %d ", country_id, region_id, depth);
       /* Obtenemos la ruta desde el archivo*/
       for (int r = 0; r < depth; r++)
       {
         fscanf(input_file, "%d", &contact_id);
         printf("%d ", contact_id);
+        route[r] = contact_id;
       }
+      
       /* Obtenemos el numero de contactos */
       fscanf(input_file, "%d", &n_contacts);
       printf("%d\n", n_contacts);
-
+      add_contacts(new_world, country_id, region_id, depth, route, n_contacts);
     } 
     else if (string_equals(command, "POSITIVE"))
     {
@@ -179,6 +182,7 @@ int main(int argc, char **argv)
     {
       fprintf(output_file, "INFORM %d %d\n", country_id, region_id);
       /* [Por implementar] */
+      inform(new_world, country_id, region_id, output_file);
       
     } 
     else if (string_equals(command, "STATISTICS"))

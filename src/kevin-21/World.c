@@ -75,68 +75,66 @@ void add_contacts(World* world, int country_idx, int region_idx, int depth, int*
   // persona_print(person,0);
 }
 
-void inform(World* world, int country_idx, int region_idx, int output){ //Notese cambiar el output para hacer el write
-  printf("INFORM %i %i\n");
+void inform(World* world, int country_idx, int region_idx, FILE *output){ //Notese cambiar el output para hacer el write
+  // printf("INFORM %i %i\n", country_idx, region_idx);
   Persona* first = &world->countries[country_idx][region_idx];
-  persona_print(first, 0);
+  persona_print(first, 0, output);
 
 }
 
-int main(){
-  World* NW = world_init(2);
-  create_region(NW, 0, 2);
-  create_region(NW, 1, 3);
-  // printf("Paises %i\n", NW->n_countries);
-  // for (int i = 0; i < NW->n_countries; i++)
-  // {
-  //   for (int j = 0; j < NW->n_regions_countries[i]; j++)
-  //   {
-  //      printf("Pais %i Region %i, %i:%i\n", i, j, NW->countries[i][j].id, NW->countries[i][j].state);
-  //   }
-  // } 
-  // printf("Finish\n");
-  // printf("id %i state %i direccion %p\n", NW->countries[0][0].id, NW->countries[0][0].state, &NW->countries[0][0]);
-  // NW->countries[0][0] = add_contact(NW->countries[0][0],1);
-  // NW->countries[0][0] = add_contact(NW->countries[0][0],2);
-  int array[1] = {0};
-  add_contacts(NW, 1, 1, 0, array, 3);
-  int ruta[1] = {2};
-  add_contacts(NW, 1, 1, 1, ruta, 2);
-  // printf("People count: %i\n", NW->people_count[0][0]); // La person_count esta bien...
-  persona_print(&NW->countries[1][1],0);
-  printf("Head %i\n", NW->countries[1][1].head->id);
-  printf("Tail %i\n", NW->countries[1][1].tail->id);
-  // printf("head id: %i\n", NW->countries[0][0].head->id);
-  // printf("tail id: %i\n", NW->countries[0][0].tail->id);
+// int main(){
+//   World* NW = world_init(2);
+//   create_region(NW, 0, 2);
+//   create_region(NW, 1, 3);
+//   // printf("Paises %i\n", NW->n_countries);
+//   // for (int i = 0; i < NW->n_countries; i++)
+//   // {
+//   //   for (int j = 0; j < NW->n_regions_countries[i]; j++)
+//   //   {
+//   //      printf("Pais %i Region %i, %i:%i\n", i, j, NW->countries[i][j].id, NW->countries[i][j].state);
+//   //   }
+//   // } 
+//   // printf("Finish\n");
+//   // printf("id %i state %i direccion %p\n", NW->countries[0][0].id, NW->countries[0][0].state, &NW->countries[0][0]);
+//   // NW->countries[0][0] = add_contact(NW->countries[0][0],1);
+//   // NW->countries[0][0] = add_contact(NW->countries[0][0],2);
+//   int array[1] = {0};
+//   add_contacts(NW, 1, 1, 0, array, 3);
+//   int ruta[1] = {2};
+//   add_contacts(NW, 1, 1, 1, ruta, 2);
+//   // printf("People count: %i\n", NW->people_count[0][0]); // La person_count esta bien...
+//   inform(NW, 1, 1, 0);
+//   // printf("head id: %i\n", NW->countries[0][0].head->id);
+//   // printf("tail id: %i\n", NW->countries[0][0].tail->id);
 
-  // int ruta[2] = {2, 3};
-  // search(NW, 0, 1, 2, ruta);
-  // printf("n_countries: %i\n", NW->n_countries);
-  // printf("n_regions_countries: ");
-  // for(int i = 0; i < NW->n_countries; i++) {
-  //     printf("%d", NW->n_regions_countries[i]);
-  //     printf(",");
-  // }
-  // printf("\npeople_count pais 0: \n");
-  //   for(int j = 0; j<NW->n_regions_countries[0];j++){
-  //     printf("People region %i: %i\n", j, NW->people_count[0][j]);
-  //   }
+//   // int ruta[2] = {2, 3};
+//   // search(NW, 0, 1, 2, ruta);
+//   // printf("n_countries: %i\n", NW->n_countries);
+//   // printf("n_regions_countries: ");
+//   // for(int i = 0; i < NW->n_countries; i++) {
+//   //     printf("%d", NW->n_regions_countries[i]);
+//   //     printf(",");
+//   // }
+//   // printf("\npeople_count pais 0: \n");
+//   //   for(int j = 0; j<NW->n_regions_countries[0];j++){
+//   //     printf("People region %i: %i\n", j, NW->people_count[0][j]);
+//   //   }
 
-  // printf("\npeople_count pais 1: \n");
-  //   for(int j = 0; j<NW->n_regions_countries[1];j++){
-  //     printf("People region %i: %i\n", j, NW->people_count[1][j]);
-  //   }
+//   // printf("\npeople_count pais 1: \n");
+//   //   for(int j = 0; j<NW->n_regions_countries[1];j++){
+//   //     printf("People region %i: %i\n", j, NW->people_count[1][j]);
+//   //   }
 
-  // printf("\nPaciente region 0: \n");
-  //   for(int j = 0; j<NW->n_regions_countries[0];j++){
-  //     printf("Paciente 0 region %i: %i:%i\n", j, NW->countries[0][j].id, NW->countries[0][j].state);
-  //   }
+//   // printf("\nPaciente region 0: \n");
+//   //   for(int j = 0; j<NW->n_regions_countries[0];j++){
+//   //     printf("Paciente 0 region %i: %i:%i\n", j, NW->countries[0][j].id, NW->countries[0][j].state);
+//   //   }
 
-  // printf("\nPaciente region 1: \n");
-  //   for(int j = 0; j<NW->n_regions_countries[1];j++){
-  //     printf("Paciente 0 region %i: %i:%i\n", j, NW->countries[1][j].id, NW->countries[1][j].state);
-  //   }
+//   // printf("\nPaciente region 1: \n");
+//   //   for(int j = 0; j<NW->n_regions_countries[1];j++){
+//   //     printf("Paciente 0 region %i: %i:%i\n", j, NW->countries[1][j].id, NW->countries[1][j].state);
+//   //   }
   
-  return 0;
-}
+//   return 0;
+// }
 

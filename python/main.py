@@ -110,7 +110,7 @@ if __name__ == "__main__":
         elif command == "CORRECT":
             pass
 
-        elif command == "STADISTICS":
+        elif command == "STATISTICS":
             pass
 
     # Cerramos archivo de lectura

@@ -30,12 +30,13 @@ Persona* persona_init(int id, int state)
   return persona;
 }
 
-void persona_print(Persona* persona,int n)
+void persona_print(Persona* persona,int n, FILE *output)
 {
-  printf("%*s %i:%i\n", n, "", persona->id, persona->state);
+  fprintf(output, "%*s %i:%i\n", n, "", persona->id, persona->state);
+  // printf("%*s %i:%i\n", n, "", persona->id, persona->state);
   Persona* current = persona->head;
   while (current){
-    persona_print(current, n+3);
+    persona_print(current, n+4, output);
     current = current->next;
   }
   
