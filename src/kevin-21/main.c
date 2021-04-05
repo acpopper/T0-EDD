@@ -97,18 +97,18 @@ int main(int argc, char **argv)
       fscanf(input_file, "%d", &depth);
       int route[depth];
       route[0]=0;
-      printf("ADD_CONTACTS %d %d %d ", country_id, region_id, depth);
+      // printf("ADD_CONTACTS %d %d %d ", country_id, region_id, depth);
       /* Obtenemos la ruta desde el archivo*/
       for (int r = 0; r < depth; r++)
       {
         fscanf(input_file, "%d", &contact_id);
-        printf("%d ", contact_id);
+        // printf("%d ", contact_id);
         route[r] = contact_id;
       }
       
       /* Obtenemos el numero de contactos */
       fscanf(input_file, "%d", &n_contacts);
-      printf("%d\n", n_contacts);
+      // printf("%d\n", n_contacts);
       add_contacts(new_world, country_id, region_id, depth, route, n_contacts);
     } 
     else if (string_equals(command, "POSITIVE"))
@@ -129,15 +129,22 @@ int main(int argc, char **argv)
     {
       
       fscanf(input_file, "%d", &depth);
-      printf("NEGATIVE %d %d %d ", country_id, region_id, depth);
+      // printf("NEGATIVE %d %d %d ", country_id, region_id, depth);
       /* Obtenemos la ruta desde el archivo*/
+      int route[depth];
+      route[0]=0;
       for (int r = 0; r < depth; r++)
       {
         fscanf(input_file, "%d", &contact_id);
-        printf("%d ", contact_id);
+        // printf("%d ", contact_id);
+        route[r] = contact_id;
       }
-      printf("\n");
-
+      // printf("\n");
+      Persona* persona = search(new_world, country_id, region_id, depth, route);
+      // printf("Dir neg %p\n", persona);
+      persona_reassign(persona); //si se modifica el arbol, problema esta en el print
+      
+      
     } 
     else if (string_equals(command, "RECOVERED"))
     {
@@ -180,10 +187,10 @@ int main(int argc, char **argv)
     } 
     else if (string_equals(command, "INFORM"))
     {
+      printf("inform head id %i\n", new_world->countries[country_id][region_id].head->id);
       fprintf(output_file, "INFORM %d %d\n", country_id, region_id);
       /* [Por implementar] */
       inform(new_world, country_id, region_id, output_file);
-      
     } 
     else if (string_equals(command, "STATISTICS"))
     {

@@ -49,16 +49,16 @@ Persona* search(World* world, int country_idx, int region_idx, int depth, int* r
   return(person);
 }
 
-Persona add_contact(Persona person, int new_id){
+Persona add_contact(Persona *person, int new_id){
   int state;
-  if(person.state == 2){
+  if((*person).state == 2){
     state = 1;
   }
   else{
     state = 0;
   }
-  persona_append((&person), new_id, state);
-  return person;
+  persona_append((person), new_id, state);
+  return *person;
 }
 void add_contacts(World* world, int country_idx, int region_idx, int depth, int* route, int n_contacts){
   Persona* person = malloc(sizeof(Persona*));
@@ -66,7 +66,7 @@ void add_contacts(World* world, int country_idx, int region_idx, int depth, int*
 
   for(int i=0; i<n_contacts; i++){
     int new_id = world->people_count[country_idx][region_idx];
-    *person = add_contact(*person, new_id);
+    *person = add_contact(person, new_id);
     // printf("contacto de persona %i añadido. Persona %i\n", (*person).id, new_id);
     world->people_count[country_idx][region_idx]+=1;
   }
@@ -75,8 +75,8 @@ void add_contacts(World* world, int country_idx, int region_idx, int depth, int*
   // persona_print(person,0);
 }
 
-void inform(World* world, int country_idx, int region_idx, FILE *output){ //Notese cambiar el output para hacer el write
-  // printf("INFORM %i %i\n", country_idx, region_idx);
+void inform(World* world, int country_idx, int region_idx, FILE *output){ 
+  
   Persona* first = &world->countries[country_idx][region_idx];
   persona_print(first, 0, output);
 

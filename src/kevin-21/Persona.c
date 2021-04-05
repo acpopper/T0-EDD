@@ -31,10 +31,11 @@ Persona* persona_init(int id, int state)
 }
 
 void persona_print(Persona* persona,int n, FILE *output)
-{
+{ 
   fprintf(output, "%*s %i:%i\n", n, "", persona->id, persona->state);
-  // printf("%*s %i:%i\n", n, "", persona->id, persona->state);
   Persona* current = persona->head;
+  
+  
   while (current){
     persona_print(current, n+4, output);
     current = current->next;
@@ -69,7 +70,43 @@ Persona* search_contact(Persona* persona, int id){
         }
         return NULL;
 }
+// reasignador
+void persona_reassign(Persona *persona)
+{  //printf("Dir reassign %p\n", persona);
+  if(persona->prev && persona->next){
+    // printf("prev %i current %i next %i\n", persona->prev->id, persona->id, persona->next->id);
+    persona->prev->next=persona->next;
+    persona->next->prev=persona->prev;
+  }
+  else if(persona->prev){
+    // printf("prev %i current %in", persona->prev->id, persona->id);
+    persona->parent->tail=persona->prev;
+    persona->prev->next=NULL;
+  }
+  else{
+    // printf("current %i next %i\n", persona->id, persona->next->id);
+    persona->parent->head=persona->next;
+    persona->next->prev=NULL;
+    persona->parent=NULL;
+    // persona->next=NULL;
+  }
+  }
 
+// destructor de hijos
+void persona_destroy(Persona *persona)
+{ 
+  // Si hay un nodo en la sig posicion, llamamos recursivamente a la funcion
+  if (persona->head)
+  {
+    persona_destroy(persona->head);
+  }
+  else if(persona->next){
+    persona_destroy(persona->next);
+  }
+  
+  // Luego, liberamos la lista
+  free(persona);
+}
 
 //Testeamos el codigo
 // int main(int argc, char** argv)
