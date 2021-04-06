@@ -82,6 +82,30 @@ void inform(World* world, int country_idx, int region_idx, FILE *output){
 
 }
 
+void recovered(World* world, int country_id, int region_id, int* route, int depth){
+  Persona* persona = search(world, country_id, region_id, depth, route);
+  persona->state = 3;
+}
+
+void positive(World* world, int country_id, int region_id, int* route, int depth){
+  Persona* persona = search(world, country_id, region_id, depth, route);
+  persona->state = 2;
+  Persona* current = persona->head;
+  while(current){
+    current->state=1;
+    current=current->next;
+  }
+}
+
+void statistics(World* world, int country_id, int region_id, FILE *output){
+  Persona* first = &world->countries[country_id][region_id];
+  int final = true_tail(first);
+  printf("world tail %i\n", final);
+  int* cuenta = calloc(4, sizeof(int));
+  printf("World cuenta: %i, %i, %i, %i\n", cuenta[0], cuenta[1], cuenta[2], cuenta[3]);
+  persona_statistics(first, output, cuenta, final);
+}
+
 // int main(){
 //   World* NW = world_init(2);
 //   create_region(NW, 0, 2);

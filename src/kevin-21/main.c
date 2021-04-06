@@ -117,13 +117,16 @@ int main(int argc, char **argv)
       fscanf(input_file, "%d", &depth);
       printf("POSITIVE %d %d %d ", country_id, region_id, depth);
       /* Obtenemos la ruta desde el archivo*/
+      int route[depth];
+      route[0]=0;
       for (int r = 0; r < depth; r++)
       {
         fscanf(input_file, "%d", &contact_id);
         printf("%d ", contact_id);
+        route[r] = contact_id;
       }
       printf("\n");
-
+      positive(new_world, country_id, region_id, route, depth);
     } 
     else if (string_equals(command, "NEGATIVE"))
     {
@@ -152,14 +155,18 @@ int main(int argc, char **argv)
       fscanf(input_file, "%d", &depth);
       printf("RECOVERED %d %d %d ", country_id, region_id, depth);
       /* Obtenemos la ruta desde el archivo*/
+      int route[depth];
+      route[0]=0;
       for (int r = 0; r < depth; r++)
       {
         fscanf(input_file, "%d", &contact_id);
         printf("%d ", contact_id);
+        route[r]=contact_id;
       }
       printf("\n");
 
       /* [Por implementar] */
+      recovered(new_world, country_id, region_id, route, depth);
 
     } 
     else if (string_equals(command, "CORRECT"))
@@ -167,18 +174,24 @@ int main(int argc, char **argv)
       fscanf(input_file, "%d", &depth);
       printf("RECOVERED %d %d %d ", country_id, region_id, depth);
       /* Obtenemos la primera ruta desde el archivo*/
+      int route[depth];
+      route[0]=0;
       for (int r = 0; r < depth; r++)
       {
         fscanf(input_file, "%d", &contact_id);
         printf("%d ", contact_id);
+        route[r]=contact_id;
       }
       /* Obtenemos la segunda ruta desde el archivo*/
       fscanf(input_file, "%d", &depth);
       printf("%d ", depth);
+      int ruta[depth];
+      ruta[0]=0;
       for (int r = 0; r < depth; r++)
       {
         fscanf(input_file, "%d", &contact_id);
         printf("%d ", contact_id);
+        ruta[r]=contact_id;
       }
       printf("\n");
 
@@ -187,15 +200,17 @@ int main(int argc, char **argv)
     } 
     else if (string_equals(command, "INFORM"))
     {
-      printf("inform head id %i\n", new_world->countries[country_id][region_id].head->id);
+      
       fprintf(output_file, "INFORM %d %d\n", country_id, region_id);
       /* [Por implementar] */
       inform(new_world, country_id, region_id, output_file);
     } 
+
     else if (string_equals(command, "STATISTICS"))
     {
       fprintf(output_file, "STATISTICS %d %d\n", country_id, region_id);
       /* [Por implementar] */
+      statistics(new_world, country_id, region_id, output_file);
 
     }
 
