@@ -32,7 +32,7 @@ Persona* persona_init(int id, int state)
 
 void persona_print(Persona* persona,int n, FILE *output)
 { 
-  fprintf(output, "%*s %i:%i\n", n, "", persona->id, persona->state);
+  fprintf(output, "%*s%i:%i\n", n, "", persona->id, persona->state);
   Persona* current = persona->head;
   
   while (current){
@@ -57,16 +57,16 @@ void persona_statistics(Persona* persona, FILE *output, int* cuenta, int final)
 { 
   if(persona->state==0){
     cuenta[0]+=1;
-    printf("ceros %i\n", cuenta[0]);
+    // printf("ceros %i\n", cuenta[0]);
   } else if(persona->state==1){
     cuenta[1]+=1;
-    printf("unos %i\n", cuenta[1]);
+    // printf("unos %i\n", cuenta[1]);
   } else if(persona->state==2){
     cuenta[2]+=1;
-    printf("doses %i\n", cuenta[2]);
+    // printf("doses %i\n", cuenta[2]);
   } else{
     cuenta[3]+=1;
-    printf("treses %i\n", cuenta[3]);
+    // printf("treses %i\n", cuenta[3]);
   }
   if(persona->head){
     Persona* current = persona->head;
@@ -121,34 +121,36 @@ void persona_reassign(Persona *persona)
     // printf("prev %i current %i next %i\n", persona->prev->id, persona->id, persona->next->id);
     persona->prev->next=persona->next;
     persona->next->prev=persona->prev;
+    persona->parent=NULL;
   }
   else if(persona->prev){
     // printf("prev %i current %in", persona->prev->id, persona->id);
     persona->parent->tail=persona->prev;
     persona->prev->next=NULL;
+    persona->parent=NULL;
   }
-  else{
+  else if(persona->next){
     // printf("current %i next %i\n", persona->id, persona->next->id);
     persona->parent->head=persona->next;
     persona->next->prev=NULL;
     persona->parent=NULL;
     // persona->next=NULL;
+  } else{
+    persona->parent->head=NULL;
+    persona->parent->tail=NULL;
+    persona->parent=NULL;
   }
   }
 
 // destructor de self e hijos
 void persona_destroy(Persona *persona)
 { 
-  // Si hay un nodo en la sig posicion, llamamos recursivamente a la funcion
-  if (persona->head)
-  {
+  if(persona->head){
     persona_destroy(persona->head);
   }
-  else if(persona->next){
+  if(persona->next){
     persona_destroy(persona->next);
   }
-  
-  // Luego, liberamos la lista
   free(persona);
 }
 

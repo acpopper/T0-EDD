@@ -62,11 +62,12 @@ Persona add_contact(Persona *person, int new_id){
 }
 void add_contacts(World* world, int country_idx, int region_idx, int depth, int* route, int n_contacts){
   Persona* person = malloc(sizeof(Persona*));
-  person = search(world, country_idx, region_idx, depth, route); 
-
+  person = search(world, country_idx, region_idx, depth, route);
   for(int i=0; i<n_contacts; i++){
     int new_id = world->people_count[country_idx][region_idx];
+    
     *person = add_contact(person, new_id);
+    
     // printf("contacto de persona %i añadido. Persona %i\n", (*person).id, new_id);
     world->people_count[country_idx][region_idx]+=1;
   }
@@ -87,24 +88,93 @@ void recovered(World* world, int country_id, int region_id, int* route, int dept
   persona->state = 3;
 }
 
-void positive(World* world, int country_id, int region_id, int* route, int depth){
+void positive(World* world, int country_id, int region_id, int* route, int depth, int caso){
   Persona* persona = search(world, country_id, region_id, depth, route);
   persona->state = 2;
   Persona* current = persona->head;
   while(current){
-    current->state=1;
-    current=current->next;
+    if(!caso){
+      current->state=1;
+      current=current->next;
+    } else{
+        if (current->state==0){
+          current->state=1;
+        }
+        current=current->next;
+    }
   }
 }
 
 void statistics(World* world, int country_id, int region_id, FILE *output){
   Persona* first = &world->countries[country_id][region_id];
   int final = true_tail(first);
-  printf("world tail %i\n", final);
+  // printf("world tail %i\n", final);
   int* cuenta = calloc(4, sizeof(int));
-  printf("World cuenta: %i, %i, %i, %i\n", cuenta[0], cuenta[1], cuenta[2], cuenta[3]);
+  // printf("World cuenta: %i, %i, %i, %i\n", cuenta[0], cuenta[1], cuenta[2], cuenta[3]);
   persona_statistics(first, output, cuenta, final);
 }
+
+
+void correct(World* world, int country_id, int region_id, int* route, int* ruta, int depth, int profundidad){
+  Persona* primera = search(world, country_id, region_id, depth, route);
+  Persona* segunda = search(world, country_id, region_id, profundidad, ruta);
+  // printf("P %i S %i\n", primera->id, segunda->id);
+  Persona* aux = persona_init(0, 0);
+  if(primera->head){
+    Persona* current = primera->head;
+    aux->head=current;
+    while(current){
+      current->parent=aux;
+      current=current->next;
+    }
+    aux->tail=current;
+  } else{
+    aux->head=NULL;
+    aux->tail=NULL;
+  }
+  if(segunda->head){
+    Persona* current = segunda->head;
+    primera->head=current;
+    while(current){
+      current->parent=primera;
+      current=current->next;
+    }
+    primera->tail=current;
+  } else{
+    primera->head=NULL;
+    primera->tail=NULL;
+  }
+  if(aux->head){
+    Persona* current = aux->head;
+    segunda->head=current;
+    while(current){
+      current->parent=segunda;
+      current=current->next;
+    }
+    segunda->tail=current;
+  } else{
+    segunda->head=NULL;
+    segunda->tail=NULL;
+  }
+  if(primera->state==2){
+    positive(world, country_id, region_id, route, depth, 1);
+  }
+  if(segunda->state==2){
+    positive(world, country_id, region_id, ruta, profundidad, 1);
+  }
+  free(aux);
+}
+
+
+void destroy_world(World* world){
+  for(int i=0; i<world->n_countries;i++){
+    for(int j=0; j<world->n_regions_countries[i];j++){
+      persona_destroy(&world->countries[i][j]);
+    }
+  }
+  free(world);
+}
+
 
 // int main(){
 //   World* NW = world_init(2);
