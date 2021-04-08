@@ -51,18 +51,20 @@ Persona* search(World* world, int country_idx, int region_idx, int depth, int* r
 
 Persona add_contact(Persona *person, int new_id){
   int state;
-  if((*person).state == 2){
+  if(person->state == 2){
     state = 1;
   }
   else{
     state = 0;
   }
-  persona_append((person), new_id, state);
+  
+  persona_append(person, new_id, state);
   return *person;
 }
 void add_contacts(World* world, int country_idx, int region_idx, int depth, int* route, int n_contacts){
   Persona* person = malloc(sizeof(Persona*));
   person = search(world, country_idx, region_idx, depth, route);
+  // printf("persona: %i\n", person->id);
   for(int i=0; i<n_contacts; i++){
     int new_id = world->people_count[country_idx][region_idx];
     
@@ -125,9 +127,11 @@ void correct(World* world, int country_id, int region_id, int* route, int* ruta,
     aux->head=current;
     while(current){
       current->parent=aux;
+      aux->tail=current;
       current=current->next;
     }
-    aux->tail=current;
+    primera->head=NULL;
+    primera->tail=NULL;
   } else{
     aux->head=NULL;
     aux->tail=NULL;
@@ -137,25 +141,29 @@ void correct(World* world, int country_id, int region_id, int* route, int* ruta,
     primera->head=current;
     while(current){
       current->parent=primera;
+      primera->tail=current;
       current=current->next;
     }
-    primera->tail=current;
   } else{
     primera->head=NULL;
     primera->tail=NULL;
   }
+  segunda->head=NULL;
+  segunda->tail=NULL;
   if(aux->head){
     Persona* current = aux->head;
     segunda->head=current;
     while(current){
       current->parent=segunda;
+      segunda->tail=current;
       current=current->next;
     }
-    segunda->tail=current;
   } else{
     segunda->head=NULL;
     segunda->tail=NULL;
   }
+  aux->head=NULL;
+  aux->tail=NULL;
   if(primera->state==2){
     positive(world, country_id, region_id, route, depth, 1);
   }

@@ -89,17 +89,17 @@ void persona_statistics(Persona* persona, FILE *output, int* cuenta, int final)
 
 void persona_append(Persona* persona, int id, int state)
 {
- 
   Persona *new_persona = persona_init(id, state);
   new_persona->parent = persona;
-  
   if (!persona->head) {
       persona->head = new_persona;
   }
   else {
+      
       new_persona->prev = persona->tail;
       persona->tail->next = new_persona;
   }
+  
   persona->tail = new_persona;
 }
 

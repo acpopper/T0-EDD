@@ -83,7 +83,7 @@ int main(int argc, char **argv)
   {
     /* Disminuimos en 1 el número de líneas por leer */
     // n_lines--;
-    printf("LINEA %i\n", i);
+    // printf("LINEA %i\n", i);
     /* Leemos la instrucción */
     fscanf(input_file, "%s", command);
 
@@ -91,6 +91,7 @@ int main(int argc, char **argv)
     fscanf(input_file, "%d", &country_id);
     fscanf(input_file, "%d", &region_id);
     
+    // printf("Command: %s\n", command);
 
     /* POSITIVE */
     if (string_equals(command, "ADD_CONTACTS"))
@@ -110,6 +111,7 @@ int main(int argc, char **argv)
       /* Obtenemos el numero de contactos */
       fscanf(input_file, "%d", &n_contacts);
       // printf("%d\n", n_contacts);
+      
       add_contacts(new_world, country_id, region_id, depth, route, n_contacts);
     } 
     else if (string_equals(command, "POSITIVE"))
