@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Persona.c"
-
-typedef struct world {
-  int n_countries;
-  int* n_regions_countries;
-  Persona** countries;
-  int** people_count;  
-} World;
+#include "World.h"
 
 World* world_init(int n_countries)
 {

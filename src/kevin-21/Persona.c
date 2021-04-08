@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct persona {
-  int id;
-  int state;
-  struct persona* parent;
-  struct persona* head;
-  struct persona* tail;
-  struct persona* prev;
-  struct persona* next;
-} Persona;
+#include "Persona.h"
 
 Persona* persona_init(int id, int state)
 {

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
-#include "World.c"
+#include "World.h"
 
 
 /* Retorna true si ambos strings son iguales */
